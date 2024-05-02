@@ -1,0 +1,56 @@
+{
+  "name": "QuickJS-ESP32-Console",
+  "displayName": "QuickJS_ESP32_Console",
+  "description": "QuickJS_ESP32_Console",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "QuickJS_ESP32_Console.command_menu",
+        "title": "QuickJS_ESP32: Menu"
+      },
+      {
+        "command": "QuickJS_ESP32_Console.code_upload",
+        "title": "QuickJS_ESP32: Upload"
+      },
+      {
+        "command": "QuickJS_ESP32_Console.code_download",
+        "title": "QuickJS_ESP32: Download"
+      },
+      {
+        "command": "QuickJS_ESP32_Console.setting_host",
+        "title": "QuickJS_ESP32: Setting"
+      },
+      {
+        "command": "QuickJS_ESP32_Console.terminal_restart",
+        "title": "QuickJS_ESP32: Restart"
+      }      
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.88.0",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
