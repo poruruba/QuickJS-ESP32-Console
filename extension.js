@@ -92,7 +92,7 @@ async function activate(context) {
 			return;
 		}
 		try{
-			vscode.env.clipboard.writeText("___ProgramStart___\n" + script + "\n___ProgramEnd___\n");
+			vscode.env.clipboard.writeText("//___ProgramStart___\n" + script + "\n//___ProgramEnd___\n");
 			vscode.window.showInformationMessage('クリップボードにアップロードのためのコードをコピーしました。');
 		}catch(error){
 			console.error(error);
