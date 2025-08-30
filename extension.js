@@ -14,7 +14,7 @@ async function activate(context) {
 
 	if( !targetIp ){
 		const ipaddress = await vscode.window.showInputBox({
-			title: '対象デバイスのIPアドレス'
+			title: '対象デバイスのIPアドレスを指定してください。'
 		});
 		if (ipaddress) {
 			targetIp = ipaddress;
@@ -41,6 +41,12 @@ async function activate(context) {
 	myButton.text = "$(repo-push)";
 	myButton.tooltip = "コードをダウンロードします。";
 	myButton.command = module_name + ".code_download";
+	myButton.show();
+
+	var myButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, defaultPriority);
+	myButton.text = "$(repo-clone)";
+	myButton.tooltip = "コードをSerialからアップロードします。";
+	myButton.command = module_name + ".code_upload_serial";
 	myButton.show();
 
 	var myButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, defaultPriority);
@@ -75,13 +81,34 @@ async function activate(context) {
 	});
 	context.subscriptions.push(disposable);
 
+	var disposable = vscode.commands.registerCommand(module_name + '.code_upload_serial', async function () {
+		let script;
+		try{
+			const editor = vscode.window.activeTextEditor;
+			script = editor.document.getText();
+		}catch(error){
+			console.error(error);
+			vscode.window.showInformationMessage('ファイルがありません。');
+			return;
+		}
+		try{
+			vscode.env.clipboard.writeText("___ProgramStart___\n" + script + "\n___ProgramEnd___\n");
+			vscode.window.showInformationMessage('クリップボードにアップロードのためのコードをコピーしました。');
+		}catch(error){
+			console.error(error);
+			vscode.window.showInformationMessage('コピーに失敗しました。');
+		}
+	});
+	context.subscriptions.push(disposable);
+
 	disposable = vscode.commands.registerCommand(module_name + '.command_menu', async function () {
 		const selected = await vscode.window.showQuickPick(
-				['Upload', 'Download', 'Restart', 'Setting'],
+				['Upload', 'Download', "Upload(Serial)", 'Restart', 'Setting', 'Deactivate'],
 				{ placeHolder: 'コマンドを選択して下さい。' });
 		switch(selected){
 			case "Upload": 	vscode.commands.executeCommand(module_name + '.code_upload'); break;
 			case "Download": 	vscode.commands.executeCommand(module_name + '.code_download'); break;
+			case "Upload(Serial)": 	vscode.commands.executeCommand(module_name + '.code_upload_serial'); break;
 			case "Restart": 	vscode.commands.executeCommand(module_name + '.terminal_restart'); break;
 			case "Setting": 	vscode.commands.executeCommand(module_name + '.setting_host'); break;
 		}
@@ -90,7 +117,7 @@ async function activate(context) {
 
 	disposable = vscode.commands.registerCommand(module_name + '.setting_host', async function () {
 		const ipaddress = await vscode.window.showInputBox({
-			title: '対象デバイスのIPアドレス',
+			title: '対象デバイスのIPアドレスを指定してください。',
 			value: targetIp
 		});
 		if (ipaddress) {
@@ -113,6 +140,7 @@ async function activate(context) {
 			const script = await arduino.code_download();
 
 			vscode.env.clipboard.writeText(script);
+			vscode.window.showInformationMessage('クリップボードにダウンロードしたコードをコピーしました。');
 			
 			// var answer = await vscode.window.showInformationMessage('コードを差し替えますがよいですか？', 'Yes', 'No');
 			// console.log(answer);
@@ -122,7 +150,6 @@ async function activate(context) {
 			// 	builder.replace(new vscode.Range(doc.lineAt(0).range.start, doc.lineAt(doc.lineCount - 1).range.end), script);
 			// });
 					
-			vscode.window.showInformationMessage('クリップボードにダウンロードしたコードをコピーしました。');
 		}catch(error){
 			console.error(error);
 			vscode.window.showInformationMessage('ダウンロードに失敗しました。');

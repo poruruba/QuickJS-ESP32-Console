@@ -23,6 +23,10 @@
         "title": "QuickJS_ESP32: Upload"
       },
       {
+        "command": "QuickJS_ESP32_Console.code_upload_serial",
+        "title": "QuickJS_ESP32: Upload(Serial)"
+      },
+      {
         "command": "QuickJS_ESP32_Console.code_download",
         "title": "QuickJS_ESP32: Download"
       },
@@ -33,7 +37,7 @@
       {
         "command": "QuickJS_ESP32_Console.terminal_restart",
         "title": "QuickJS_ESP32: Restart"
-      }      
+      }    
     ]
   },
   "publisher": "poruruba",
