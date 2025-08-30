@@ -2,7 +2,7 @@
   "name": "QuickJS-ESP32-Console",
   "displayName": "QuickJS_ESP32_Console",
   "description": "QuickJS_ESP32_Console",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.88.0"
   },
